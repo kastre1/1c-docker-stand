@@ -1,0 +1,63 @@
+services:
+  # ============================================================
+  # PostgreSQL 15.17-1.1C (сборка 1С) в Docker
+  # ============================================================
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    container_name: pg-1c
+    restart: unless-stopped
+    # ⚠️ Ключевой параметр — заставляет PostgreSQL слушать ВСЕ интерфейсы,
+    #     а не только localhost. Без него 1С не сможет подключиться.
+    command: ["postgres", "-c", "listen_addresses=*"]
+    environment:
+      POSTGRES_PASSWORD: "Str0ngP@ss"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+      TZ: "Europe/Moscow"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - 1c-net
+
+  # ============================================================
+  # Сервер 1С:Предприятие 8.3.26.1540 в Docker
+  # ============================================================
+  1c-server:
+    build:
+      context: ./1c-server
+      dockerfile: Dockerfile
+    container_name: 1c-server
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    ports:
+      - "1540:1540"               # ragent
+      - "1541:1541"               # rmngr
+      - "1560-1591:1560-1591"     # rphost
+    volumes:
+      - 1c_data:/home/usr1cv8
+      - 1c_logs:/home/usr1cv8/.1cv8/1C/1cv8/logs
+      - ./1c-server/conf:/opt/1cv8/conf
+    networks:
+      - 1c-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  1c-net:
+    driver: bridge
+
+volumes:
+  pg_data:
+  1c_data:
+  1c_logs:

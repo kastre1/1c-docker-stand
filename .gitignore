@@ -1,0 +1,81 @@
+# ============================================================
+# Git exclude patterns для проекта 1C-Docker-Stand
+# ============================================================
+
+# --- 1C дистрибутивы (большие, приватные) ---
+1c-server/distr/*.zip
+1c-server/distr/*.run
+1c-server/distr/*.tar.bz2
+1c-server/distr/*.deb
+1c-server/distr/docs/
+1c-server/distr/licenses/
+1c-server/distr/readme/
+1c-server/distr/readme.htm
+1c-server/distr/Liberica*.pdf
+1c-server/distr/Liberica*.txt
+1c-server/distr/installAsRoot
+1c-server/distr/setup-full-*.run
+
+# --- PostgreSQL дистрибутивы ---
+postgres/distr/*.tar.bz2
+postgres/distr/*.zip
+postgres/distr/*.deb
+postgres/distr-min/*.deb
+
+# --- Лицензии (приватно!) ---
+1c-server/conf/*.lic
+*.lic
+
+# --- Архивы старых версий ---
+.archive/
+*.bak
+*.old
+*.backup
+
+# --- Логи и временные файлы ---
+*.log
+*.tmp
+*.swp
+*~
+
+# --- Среда разработки ---
+.env
+.env.local
+.vscode/
+.idea/
+.obsidian/
+
+# --- Python/Node (если будут вспомогательные скрипты) ---
+__pycache__/
+*.pyc
+node_modules/
+
+# --- Системные ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Docker volumes (если создаются локально) ---
+volumes/
+data/
+logs/
+
+# --- Бэкапы ---
+backup/
+backups/
+*.sql
+*.dump
+*.tar.gz
+# --- 1C дистрибутивы (большие, приватные) ---
+1c-server/distr/*.zip
+1c-server/distr/*.run
+1c-server/distr/*.tar.bz2
+1c-server/distr/*.deb
+1c-server/distr/*.pdf
+1c-server/distr/*.txt
+1c-server/distr/*.htm
+1c-server/distr/docs/
+1c-server/distr/licenses/
+1c-server/distr/readme/
+1c-server/distr/installAsRoot
+1c-server/distr/setup-full-*.run
